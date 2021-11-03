@@ -1,3 +1,9 @@
+#Mac
+.DS_Store
+
+#IDE
+.idea
+
 _site
 .sass-cache
 .jekyll-cache
