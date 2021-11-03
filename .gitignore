@@ -3,6 +3,8 @@
 
 #IDE
 .idea
+.idea/*.xml
+.iws
 
 _site
 .sass-cache
