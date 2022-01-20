@@ -2,7 +2,7 @@ title:              Jooho Yoon (DavidEugen) DEV NOTE
 email:              java_dev_85@kakao.com
 description:        Java, Spring, OOP, DDD, TDD, MSA,
 author:             DavidEugen
-baseurl:            "/DavidEugen"
+baseurl:            "/"
 url:                "https://DavidEugen.github.io"
 
 
