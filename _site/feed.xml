@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://davideugen.github.io/DavidEugen/feed.xml" rel="self" type="application/atom+xml" /><link href="https://davideugen.github.io/DavidEugen/" rel="alternate" type="text/html" /><updated>2022-01-20T23:35:42+09:00</updated><id>https://davideugen.github.io/DavidEugen/feed.xml</id><title type="html">Jooho Yoon (DavidEugen) DEV NOTE</title><subtitle>Java, Spring, OOP, DDD, TDD, MSA,</subtitle><author><name>DavidEugen</name></author><entry><title type="html">Start_lean</title><link href="https://davideugen.github.io/DavidEugen/2022/01/04/Start_Lean.html" rel="alternate" type="text/html" title="Start_lean" /><published>2022-01-04T00:00:00+09:00</published><updated>2022-01-04T00:00:00+09:00</updated><id>https://davideugen.github.io/DavidEugen/2022/01/04/Start_Lean</id><content type="html" xml:base="https://davideugen.github.io/DavidEugen/2022/01/04/Start_Lean.html">&lt;h1 id=&quot;올해-목표&quot;&gt;올해 목표&lt;/h1&gt;
+
+&lt;h2 id=&quot;간단하게-남기고-점진적으로-발전하기&quot;&gt;간단하게 남기고, 점진적으로 발전하기&lt;/h2&gt;
+&lt;p&gt;지금껏 항상 완벽을 기하다가 꾸준함을 잃게 되었다&lt;/p&gt;
+
+&lt;p&gt;잠깐잠깐 간단하게 남기고, 계속해서 발전시킬 수 있는 방법으로 접근해 보자.
+프로그램이든 글이든 간에..&lt;/p&gt;</content><author><name>DavidEugen</name></author><summary type="html">올해 목표</summary></entry><entry><title type="html">Vulnerability Cve 2021 45105</title><link href="https://davideugen.github.io/DavidEugen/2021/12/18/vulnerability-CVE-2021-45105.html" rel="alternate" type="text/html" title="Vulnerability Cve 2021 45105" /><published>2021-12-18T00:00:00+09:00</published><updated>2021-12-18T00:00:00+09:00</updated><id>https://davideugen.github.io/DavidEugen/2021/12/18/vulnerability-CVE-2021-45105</id><content type="html" xml:base="https://davideugen.github.io/DavidEugen/2021/12/18/vulnerability-CVE-2021-45105.html">&lt;p&gt;[Updated]&lt;/p&gt;
+
+&lt;p&gt;slf4j
+The SLF4J API is just an API which lets message data go through. As such, using log4j 2.x, even via SLF4J does not mitigate the vulnerability.&lt;/p&gt;
+
+&lt;p&gt;log4j
+Apache Log4j2 does not always protect from infinite recursion in lookup evaluation
+Java 8 (or later) users should upgrade to release log4j 2.17.0.&lt;/p&gt;
+
+&lt;p&gt;logback
+It is deemed safe with respect to CVE-2021-44228&lt;/p&gt;
+
+&lt;p&gt;ref.
+Comments on the CVE-2021-44228 vulnerability
+http://slf4j.org/log4shell.html&lt;/p&gt;
+
+&lt;p&gt;Apache Log4j Security Vulnerabilities
+https://logging.apache.org/log4j/2.x/security.html&lt;/p&gt;
+
+&lt;p&gt;Log4Shell: RCE 0-day exploit found in log4j 2, a popular Java logging package
+https://www.lunasec.io/docs/blog/log4j-zero-day/&lt;/p&gt;</content><author><name>DavidEugen</name></author><summary type="html">[Updated]</summary></entry><entry><title type="html">Vulnerability Cve 2021 44228</title><link href="https://davideugen.github.io/DavidEugen/2021/12/12/vulnerability-CVE-2021-44228.html" rel="alternate" type="text/html" title="Vulnerability Cve 2021 44228" /><published>2021-12-12T00:00:00+09:00</published><updated>2021-12-12T00:00:00+09:00</updated><id>https://davideugen.github.io/DavidEugen/2021/12/12/vulnerability-CVE-2021-44228</id><content type="html" xml:base="https://davideugen.github.io/DavidEugen/2021/12/12/vulnerability-CVE-2021-44228.html">&lt;h1 id=&quot;security-vulnerabilities-cve-2021-44228-log4shell&quot;&gt;[Security Vulnerabilities] CVE-2021-44228-Log4Shell&lt;/h1&gt;
+
+&lt;h2 id=&quot;ref1-apache-home&quot;&gt;[Ref.1] Apache home&lt;/h2&gt;
+&lt;p&gt;https://logging.apache.org/log4j/2.x/security.html&lt;/p&gt;
+
+&lt;h2 id=&quot;ref2&quot;&gt;[Ref.2]&lt;/h2&gt;
+&lt;p&gt;https://github.com/mubix/CVE-2021-44228-Log4Shell-Hashes&lt;/p&gt;
+
+&lt;h2 id=&quot;ref3-detection-rules&quot;&gt;[Ref.3] Detection Rules:&lt;/h2&gt;
+
+&lt;p&gt;https://gist.github.com/Neo23x0/e4c8b03ff8cdf1fa63b7d15db6e3860b&lt;/p&gt;
+
+&lt;h2 id=&quot;ref4-kisa-notes-south-korea&quot;&gt;[Ref.4] KISA Notes (South Korea)&lt;/h2&gt;
+
+&lt;p&gt;https://www.krcert.or.kr/data/secNoticeView.do?bulletin_writing_sequence=36389&lt;/p&gt;
+
+&lt;p&gt;=====================================================&lt;/p&gt;
+&lt;h2 id=&quot;log4shell-update---20211215&quot;&gt;[log4shell Update] - 2021.12.15&lt;/h2&gt;
+&lt;p&gt;Fixed in Log4j 2.12.2 and Log4j 2.16.0&lt;/p&gt;
+
+&lt;h2 id=&quot;mitigation&quot;&gt;Mitigation&lt;/h2&gt;
+&lt;p&gt;Log4j 1.x mitigation: Log4j 1.x is not impacted by this vulnerability.&lt;/p&gt;
+
+&lt;p&gt;Log4j 2.x mitigation: Implement one of the mitigation techniques below.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Java 8 (or later) users should upgrade to release 2.16.0.&lt;/li&gt;
+  &lt;li&gt;Users requiring Java 7 should upgrade to release 2.12.2 when it becomes available (work in progress, expected to be available soon).&lt;/li&gt;
+  &lt;li&gt;Otherwise, remove the JndiLookup class from the classpath: zip -q -d log4j-core-*.jar org/apache/logging/log4j/core/lookup/JndiLookup.class&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note that only the log4j-core JAR file is impacted by this vulnerability. Applications using only the log4j-api JAR file without the log4j-core JAR file are not impacted by this vulnerability.&lt;/p&gt;
+
+&lt;p&gt;https://lnkd.in/g-bv3WUE&lt;/p&gt;</content><author><name>DavidEugen</name></author><summary type="html">[Security Vulnerabilities] CVE-2021-44228-Log4Shell</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://davideugen.github.io/DavidEugen/jekyll/update/2021/04/10/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2021-04-10T02:05:53+09:00</published><updated>2021-04-10T02:05:53+09:00</updated><id>https://davideugen.github.io/DavidEugen/jekyll/update/2021/04/10/welcome-to-jekyll</id><content type="html" xml:base="https://davideugen.github.io/DavidEugen/jekyll/update/2021/04/10/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;Jekyll requires blog post files to be named according to the following format:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YEAR-MONTH-DAY-title.MARKUP&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YEAR&lt;/code&gt; is a four-digit number, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MONTH&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DAY&lt;/code&gt; are both two-digit numbers, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MARKUP&lt;/code&gt; is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;Tom&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &apos;Hi, Tom&apos; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name>DavidEugen</name></author><category term="jekyll" /><category term="update" /><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">How To Make Jekyll Blog</title><link href="https://davideugen.github.io/DavidEugen/2021/04/10/How-to-make-jekyll-blog.html" rel="alternate" type="text/html" title="How To Make Jekyll Blog" /><published>2021-04-10T00:00:00+09:00</published><updated>2021-04-10T00:00:00+09:00</updated><id>https://davideugen.github.io/DavidEugen/2021/04/10/How-to-make-jekyll-blog</id><content type="html" xml:base="https://davideugen.github.io/DavidEugen/2021/04/10/How-to-make-jekyll-blog.html">&lt;h1 id=&quot;jekyll-install&quot;&gt;Jekyll Install&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;github page 는 일종의 정적 웹 서비스&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;1-루비-인스톨러-for-windows&quot;&gt;1. 루비 인스톨러 for windows&lt;/h2&gt;
+&lt;p&gt;download 위치 : https://rubyinstaller.org/downloads/ &lt;br /&gt;
+dev kit 다운로드, 관리자 권한 설치. &lt;br /&gt;
+C:\ 에 설치&lt;/p&gt;
+
+&lt;h2 id=&quot;2-git-pages-설치&quot;&gt;2. git pages 설치&lt;/h2&gt;
+&lt;p&gt;https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll&lt;/p&gt;
+
+&lt;h3 id=&quot;21-git-remote-repository-생성&quot;&gt;2.1. git remote repository 생성&lt;/h3&gt;
+
+&lt;h3 id=&quot;22-로컬-git-디렉터리-생성&quot;&gt;2.2. 로컬 git 디렉터리 생성&lt;/h3&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd PARENT-FOLDER
+git init REPOSITORY-NAME
+cd REPOSITORY-NAME
+
+git remote add origin https://github.com/DavidEugen/DavidEugen.github.io.git
+git pull origin main
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;23-jekyll-생성&quot;&gt;2.3. jekyll 생성&lt;/h3&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll new .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;24-gemfile-수정&quot;&gt;2.4. gemfile 수정&lt;/h3&gt;
+&lt;h4 id=&quot;241-jekyll-주석처리&quot;&gt;2.4.1. jekyll 주석처리&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gem &quot;jekyll&quot;&lt;/code&gt; -&amp;gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#gem &quot;jekyll&quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;242-github-pages-gem-등록--github-pages-version--해당-버전&quot;&gt;2.4.2. github-pages gem 등록  GITHUB-PAGES-VERSION =&amp;gt; 해당 버전&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gem &quot;github-pages&quot;, &quot;~&amp;gt; GITHUB-PAGES-VERSION&quot;, group: :jekyll_plugins&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;25-번들-update&quot;&gt;2.5 번들 update&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle update&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;26-로컬-테스트&quot;&gt;2.6 로컬 테스트&lt;/h3&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec jekyll serve
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;27-git-반영&quot;&gt;2.7. git 반영&lt;/h3&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote add origin https://github.com/USER/REPOSITORY.git
+
+git push -u origin BRANCH
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>DavidEugen</name></author><summary type="html">Jekyll Install github page 는 일종의 정적 웹 서비스</summary></entry></feed>

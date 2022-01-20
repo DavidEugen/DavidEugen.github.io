@@ -1,4 +1,3 @@
-_site
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
@@ -14,5 +13,3 @@ Gemfile.lock
 .idea/*.xml
 .iws
 
-#Backup
-backup
