@@ -1,3 +1,14 @@
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+node_modules
+Gemfile.lock
+*.gem
+
+
+
 #Mac
 .DS_Store
 
@@ -6,8 +17,5 @@
 .idea/*.xml
 .iws
 
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
+#Backup
+backup
