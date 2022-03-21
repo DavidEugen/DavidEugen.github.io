@@ -15,6 +15,7 @@
 |커서 이전 위치 |opt + shift + 좌 우 방향키| alt + 좌 우 방향키 ||
 |과거 히스토리 |cmd + E| |주의 : backsapce 누르면 해당 창 닫힘|
 |리팩터링 |cmd + opt + M| alt + shift + M ||
+|실행 |ctrl + shift + R|  ||
 
 * 이클립스 윈도우 단축키는 생각나는 대로 적는것, 비교, 참고용
 
