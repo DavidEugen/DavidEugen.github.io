@@ -23,5 +23,26 @@
 
 
 
+## Terminal 에서 바로 Intellij 실행 하기
+
+1. 인텔리제이 실행
+
+2. Tools - Create Command-Line Launcehr... 클릭
+
+3. [내용 보강 필요]
+
+   - 터미널에서 실행시킬 명령어로 스크립트를 만든다.
+
+     > You can create a launcher script to enable opening files and projects in IntelliJ IDEA from the command line. Specify the name of the script and the path where it should be created: 
+
+   - 기본적으로 /usr/local/bin/idea 세팅된다.
+
+4. 터미널에서 ``` idea . ``` 으로 실행 할 수 있다. 
 
 
+
+----
+
+참고.
+
+1. https://velog.io/@martinalee94/Intellij-%ED%84%B0%EB%AF%B8%EB%84%90%EC%97%90%EC%84%9C-%EC%9D%B8%ED%85%94%EB%A6%AC%EC%A0%9C%EC%9D%B4-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0mac
