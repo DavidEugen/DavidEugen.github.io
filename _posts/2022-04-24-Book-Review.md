@@ -21,7 +21,7 @@
 
 마치 게임 공략집을 보는 것 처럼, 처음 접근하는 사람들도 쉽게 따라 할 수 있도록 배려한 부분이 눈에 띈다.
 
-![3가지 도구](https://user-images.githubusercontent.com/10527294/165565332-7f7d909a-47c9-4bc7-be01-9ff27bc1eef0.png)
+<img src="https://user-images.githubusercontent.com/10527294/165565332-7f7d909a-47c9-4bc7-be01-9ff27bc1eef0.png" alt="3가지 도구" style="zoom: 67%;" />
 
 사실 어떤 책이든 마찬가지지만 저자가 효율적으로 지식을 제공하고자 여러 시도들을 많이 한다. 그런 여러 시도에도 불구하고 정작 읽는 독자에게 그러한 노력이 제대로 전달되기란 어려운 일이다. 그런데 이 책에서는 공략집을 통해 어떻게 하면 이 책과 빨리 진해질지, 저자가 의도한 프로세스에 쉽게 접근하도록 여러 장치들 추가로 마련해 둔것 같다. 게임 공략집 처럼 이 책의 [공략집][공략집] 을 뒀다.
 
@@ -29,7 +29,7 @@
 
 덕분에 나도 쉽게 미션을 따라해 나갈 수 있었다.
 
-![체크리스트](https://user-images.githubusercontent.com/10527294/165566540-c14af657-2595-49f8-a75f-8bf4b152307f.png)
+<img src="https://user-images.githubusercontent.com/10527294/165566540-c14af657-2595-49f8-a75f-8bf4b152307f.png" alt="체크리스트" style="zoom: 33%;" />
 
 또 한가지 특징!! 엑셀 시트로 문제해결에 필요한 [체크리스트 양식][머신러닝 문제해결 체크리스트 (beta)]도 제공하고 있다. 문제해결 과정에서 짚어봐야 할 사항들을 프로세스 단계별로 정리해 놓았다. [저자 깃허브][머신러닝 딥러닝 문제해결 전략 Github]에서 최신 버전을 확인 할 수 있다. 각자가 다운로드후 자유롭게 수정·개선하여 자신만의 체크리스트를 만들 수 있게 안내하고 있다.
 
@@ -57,12 +57,12 @@
 
 [캐글][캐글 사이트] 사이트를 통해 회원가입을 하고 본격적으로 따라 해 보았다. 
 
-![캐글 사이트](https://user-images.githubusercontent.com/10527294/165563222-f9ed9565-c69a-4808-8a5e-2f9024bfccfd.png)
+<img src="https://user-images.githubusercontent.com/10527294/165563222-f9ed9565-c69a-4808-8a5e-2f9024bfccfd.png" alt="캐글 사이트" style="zoom:50%;" />
 
 
 
 
-![캐글 사이트 홈](https://user-images.githubusercontent.com/10527294/165563298-b521e839-327f-4ab0-a092-0dfd2f88f392.png)
+<img src="https://user-images.githubusercontent.com/10527294/165563298-b521e839-327f-4ab0-a092-0dfd2f88f392.png" alt="캐글 사이트 홈" style="zoom:50%;" />
 
 처음 캐글을 접하는데도 쉽게 접근 할 수 있도록 안내가 잘 되어 있었다.
 
