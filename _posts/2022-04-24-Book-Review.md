@@ -13,7 +13,7 @@
 
 이번에 신백균님께서 보내주신 저서를 통해 캐글을 새롭게 접근 해 볼 기회가 생겨 스텝바이스텝으로 접근해 보려 한다.
 
-<img src="https://user-images.githubusercontent.com/10527294/165560381-a126c388-4068-43f5-8200-3534f3d8fa28.png" alt="책이미지" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165560381-a126c388-4068-43f5-8200-3534f3d8fa28.png" alt="책이미지" style="zoom:50%;" /></center>
 
 이책의 가장 큰 특징이라고 하면 
 
@@ -28,11 +28,11 @@
 
 
 
-<img src="https://user-images.githubusercontent.com/10527294/165564378-dccae10d-103a-4be8-8c08-a3274fca5e80.png" alt="공략구성" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165564378-dccae10d-103a-4be8-8c08-a3274fca5e80.png" alt="공략구성" style="zoom:50%;" /></center>
 
 마치 게임 공략집을 보는 것 처럼, 처음 접근하는 사람들도 쉽게 따라 할 수 있도록 배려한 부분이 눈에 띈다.
 
-<img src="https://user-images.githubusercontent.com/10527294/165565332-7f7d909a-47c9-4bc7-be01-9ff27bc1eef0.png" alt="3가지 도구" style="zoom: 67%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165565332-7f7d909a-47c9-4bc7-be01-9ff27bc1eef0.png" alt="3가지 도구" style="zoom: 67%;" /></center>
 
 사실 어떤 책이든 마찬가지지만 저자가 효율적으로 지식을 제공하고자 여러 시도들을 많이 한다. 
 
@@ -42,17 +42,17 @@
 
 게임 공략집 처럼 이 책의 [공략집][공략집] 을 뒀다.
 
-<img src="https://user-images.githubusercontent.com/10527294/165565853-cccf17b6-efa9-4fa2-8023-1c63120ddf6f.png" alt="공략집" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165565853-cccf17b6-efa9-4fa2-8023-1c63120ddf6f.png" alt="공략집" style="zoom:50%;" /></center>
 
 덕분에 나도 쉽게 미션을 따라해 나갈 수 있었다.
 
-<img src="https://user-images.githubusercontent.com/10527294/165566540-c14af657-2595-49f8-a75f-8bf4b152307f.png" alt="체크리스트" style="zoom: 25%;" />
-
 또 한가지 특징!! 엑셀 시트로 문제해결에 필요한 [체크리스트 양식][머신러닝 문제해결 체크리스트 (beta)]도 제공하고 있다. 
+
+<center><img src="https://user-images.githubusercontent.com/10527294/165566540-c14af657-2595-49f8-a75f-8bf4b152307f.png" alt="체크리스트" style="zoom: 25%;" /></center>
 
 문제해결 과정에서 짚어봐야 할 사항들을 프로세스 단계별로 정리해 놓았다.
 
- [저자 깃허브][머신러닝 딥러닝 문제해결 전략 Github]에서 최신 버전을 확인 할 수 있다. 
+[저자의 깃허브][머신러닝 딥러닝 문제해결 전략 Github]에서 최신 버전을 확인 할 수 있다. 
 
 각자가 다운로드후 자유롭게 수정·개선하여 자신만의 체크리스트를 만들 수 있게 안내하고 있다.
 
@@ -64,9 +64,11 @@
 
 ---
 
-이 책은 크게 3부로 구성되어 있다. 1부는 캐글에 대한 기본 안내이고 2,3부에서 문제 해결 프로세스를 설명하고 있다.
+이 책은 크게 3부로 구성되어 있다. 
 
-<img src="https://user-images.githubusercontent.com/10527294/165564606-aed5e18e-2618-4cb8-80d0-4bec5d51bc40.png" alt="공량집" style="zoom:50%;" />
+1부는 캐글에 대한 기본 안내이고 2,3부에서 문제 해결 프로세스를 설명하고 있다.
+
+<center><img src="https://user-images.githubusercontent.com/10527294/165564606-aed5e18e-2618-4cb8-80d0-4bec5d51bc40.png" alt="공량집" style="zoom:50%;" /></center>
 
 
 
@@ -74,7 +76,7 @@
 
 4장에서는 데이터 유형을 나누고 각 유형에 필요한 시각화 기법들을 간단하게 소개하고 있다. 
 
-<img src="https://user-images.githubusercontent.com/10527294/165562564-49f9b07f-a391-4dde-8ebd-790abc48ca2c.png" alt="책의 구성" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165562564-49f9b07f-a391-4dde-8ebd-790abc48ca2c.png" alt="책의 구성" style="zoom:50%;" /></center>
 
 2부부터는 본격적으로 머신러닝 모델을 사용하는 캐글 경진대회에 익숙해질 있다. 
 
@@ -92,7 +94,7 @@
 
 ---
 
-<img src="https://user-images.githubusercontent.com/10527294/165561286-27b5b92f-1606-4344-bb3b-fb72b943829d.jpg" alt="대상독자" style="zoom: 30%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165561286-27b5b92f-1606-4344-bb3b-fb72b943829d.jpg" alt="대상독자" style="zoom: 30%;" /></center>
 
 아마 난 여기 어디쯤인듯.... ;;;;;; 
 
@@ -102,11 +104,11 @@
 
 [캐글][캐글 사이트] 사이트를 통해 회원가입을 하고 본격적으로 따라 해 보았다. 
 
-<img src="https://user-images.githubusercontent.com/10527294/165563222-f9ed9565-c69a-4808-8a5e-2f9024bfccfd.png" alt="캐글 사이트" style="zoom: 15%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165563222-f9ed9565-c69a-4808-8a5e-2f9024bfccfd.png" alt="캐글 사이트" style="zoom: 15%;" /></center>
 
 
 
-<img src="https://user-images.githubusercontent.com/10527294/165563298-b521e839-327f-4ab0-a092-0dfd2f88f392.png" alt="캐글 사이트 홈" style="zoom: 15%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165563298-b521e839-327f-4ab0-a092-0dfd2f88f392.png" alt="캐글 사이트 홈" style="zoom: 15%;" /></center>
 
 처음 캐글을 접하는데도 쉽게 접근 할 수 있도록 안내가 잘 되어 있었다.
 
@@ -134,15 +136,15 @@
 
 중간중간 필수적인 개념들도 잠깐잠깐 잘 설명해 주고 있다.
 
-<img src="https://user-images.githubusercontent.com/10527294/165578651-24b14351-bcff-4f6e-92bb-2c6491d1ba18.png" alt="간단한 개념" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165578651-24b14351-bcff-4f6e-92bb-2c6491d1ba18.png" alt="간단한 개념" style="zoom:50%;" /></center>
 
 데이터를 분석하는 과정에서 필요한 주요 특징과 그에 따른 모델링 전략도 제시하고 있다.
 
-<img src="https://user-images.githubusercontent.com/10527294/165579261-1e14b217-1b51-4cc8-a6d0-e22890cf525d.png" alt="분석 정리" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165579261-1e14b217-1b51-4cc8-a6d0-e22890cf525d.png" alt="분석 정리" style="zoom:50%;" /></center>
 
-<img src="https://user-images.githubusercontent.com/10527294/165579587-a808506f-a0c6-41e9-81fa-1cf7f2c86ab3.png" alt="모델링 전략" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165579587-a808506f-a0c6-41e9-81fa-1cf7f2c86ab3.png" alt="모델링 전략" style="zoom:50%;" /></center>
 
-<img src="https://user-images.githubusercontent.com/10527294/165584579-fed0f405-3ba7-4c60-8c10-ae879e96ad58.png" alt="데이터분석" style="zoom:50%;" />
+<center><img src="https://user-images.githubusercontent.com/10527294/165584579-fed0f405-3ba7-4c60-8c10-ae879e96ad58.png" alt="데이터분석" style="zoom:50%;" /></center>
 
 
 
