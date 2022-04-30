@@ -54,6 +54,7 @@
 - Abstract Factory Pattern
   - 상세화된 서브클래스를 정의하지 않고도 서로 관련성이 있거나 의존적인 여러 객체의 군을 생성하기 위해 인터페이스를 제공
 - Build Pattern
+- Prototype Pattern
 
 ## 구조 - 클래스나 객체의 합성에 관한 패턴
 
