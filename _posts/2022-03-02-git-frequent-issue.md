@@ -37,6 +37,59 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
 
+
+
+## Git 자주 쓰는 명령어들
+
+### Clone
+
+```shell
+$ git clone
+```
+
+원격 repository에서 가져온다.
+
+
+
+### 원격 저장소 지정
+
+```shell
+$ git remote add origin <remote-url>
+```
+
+해당 프로젝트를 외부 원격 저장소인 remote-url 을 지정. 이때 origin은 일종의 Alias 이며중심이 되는 프로젝트로 암묵적으로 origin으로 합의.
+
+
+### 원격 저장소 확인
+
+```shell
+$ git remote -v
+```
+
+등록된 원격 저장소들을 확인 할 수 있다.
+
+### Push
+
+```shell
+$ git push -u origin <branch name>
+```
+
+해당 프로젝트에서 커밋한 사항들을 origin으로 push한다. local repository의 main 브랜치가 remote repository의 main 브랜치를 바라보게 하는 명령어. -u 는 --set-upstream으로 최초 명령어 실행 이후 이를 기억해 git push, git pull만 해도 된다.
+
+### 브랜치 이동
+
+```shell
+$ git checkout <branch name>
+```
+
+다른 branch로 head를 이동 이시킨다.
+
+
+
+
+
+
+
 ---
 
 참고
