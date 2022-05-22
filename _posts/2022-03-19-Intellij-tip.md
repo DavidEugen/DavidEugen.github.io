@@ -5,6 +5,7 @@
 |내용|인텔리제이 Mac| 이클립스 Win ||
 | :--- | :--- | :--- | ---- |
 |문장 자동 완성|cmd + shift + enter|||
+|코드 Suggestion |ctrl + Space| ||
 |지역 변수 할당|cmd + opt + V| ||
 |파일 패키지 등..새로 생성|cmd + N|ctrl + n|파일 탐색창에서|
 |contructor, getter,setter..새로 생성|cmd + N, ctrl + enter|alt + insert|Editor 창에서|
@@ -19,6 +20,7 @@
 |리팩터링 |cmd + opt + M| alt + shift + M ||
 |실행 |ctrl + R|  ||
 |디버그 |ctrl + D| ||
+
 
 
 
