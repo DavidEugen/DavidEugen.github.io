@@ -162,3 +162,28 @@
    내가 그때 어떻게 처리 했는가가 중요하다.
 
 2. 실수를 했어도 괜찮다. 다만 거기서 무엇을 배웠는가 있어야 한다.
+
+
+
+## 소프트 스킬
+
+- 고객 중심 (Customer Obsession, Cusomer Focus)
+
+- 결과 도출 (Deliver Results, Bias for Action, Drive for Results)
+
+- 영향력 (Insist on the Highest Standards, Influencing for Implact)
+
+- 적응력 (Disagree and Commit, Dive Deep, Adaptibility)
+
+  - 개인적으로는 동의하지 않지만 팀전체에 동의하고 해나가는 
+
+- 판단력 (Think Big, Are Right, A Lot, Judgement)
+
+- 협업 (Earn Trust, Collaboration)
+
+  
+
+- 참고 : 
+
+  - https://www.amazon.jobs/en/principles
+  - https://www.microsoft.com/en-us/diversity/default.aspx
