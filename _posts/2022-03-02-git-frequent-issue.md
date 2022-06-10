@@ -88,7 +88,7 @@ $ git checkout <branch name>
 
 ## git Learning
 
-UI로 깃을 배울 수 있는 곳
+UI로 깃을 배울 수 있는 곳ㅎ
 
 https://learngitbranching.js.org/?locale=ko
 

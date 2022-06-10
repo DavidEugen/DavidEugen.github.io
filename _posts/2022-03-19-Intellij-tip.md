@@ -2,6 +2,10 @@
 
 # Intellij Tip
 
+## 자주사용하는 단축키
+
+https://blog.jetbrains.com/ko/2020/03/11/top-15-intellij-idea-shortcuts_ko/
+
 |내용|인텔리제이 Mac| 이클립스 Win ||
 | :--- | :--- | :--- | ---- |
 |문장 자동 완성|cmd + shift + enter|||
@@ -54,6 +58,10 @@
 
 [인텔리제이 리펙토링 관련][인텔리제이 리펙토링 관련 URL]  
 
+
+
+
+
 ----
 
 참고.
@@ -61,3 +69,4 @@
 1. https://velog.io/@martinalee94/Intellij-%ED%84%B0%EB%AF%B8%EB%84%90%EC%97%90%EC%84%9C-%EC%9D%B8%ED%85%94%EB%A6%AC%EC%A0%9C%EC%9D%B4-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0mac
 
 [인텔리제이 리펙토링 관련 URL]: https://blog.jetbrains.com/ko/idea/2020/09/everyday-refactorings-in-intellij-idea/
+
