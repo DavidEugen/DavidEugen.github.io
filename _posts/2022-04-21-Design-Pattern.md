@@ -56,6 +56,8 @@
 - Build Pattern
 - Prototype Pattern
 
+
+
 ## 구조 - 클래스나 객체의 합성에 관한 패턴
 
 ### 클래스
@@ -75,6 +77,8 @@
 - Facade Pattern
 - Flyweight Pattern
 - Proxy Pattern
+
+
 
 ## 행동 - 클래스나 객체들이 상호작용하는 방법과 책임을 분산하는 방법에 관한 패턴
 
