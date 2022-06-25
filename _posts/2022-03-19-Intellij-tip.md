@@ -1,4 +1,9 @@
-
+---
+layout: post
+title:  "Intellij Tip"
+date:   2022-03-19 03:05:53 +0900
+categories: tool IDE
+---
 
 # Intellij Tip
 

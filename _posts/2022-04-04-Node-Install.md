@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Node Install"
+date:   2022-04-04 03:05:53 +0900
+categories: env node
+---
 # Node 설치 하기
 
 node.js 도 다양한 버전이 존재.

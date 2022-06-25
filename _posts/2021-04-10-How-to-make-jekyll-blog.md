@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "Jekyll Install"
+date:   2021-04-10 03:05:53 +0900
+categories: jekyll update
+---
+
 # Jekyll Install
 * github page 는 일종의 정적 웹 서비스
 
@@ -47,3 +54,15 @@ git remote add origin https://github.com/USER/REPOSITORY.git
 
 git push -u origin BRANCH
 ```
+
+
+
+### GitHub과 로컬의 환경 차이 이슈
+
+
+
+참고
+
+---
+
+[1]: https://fuzzysound.github.io/github-and-jekyll	"깃헙과 로컬의 환경 차이 이슈"
