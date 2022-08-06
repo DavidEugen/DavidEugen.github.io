@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Interview 준비"
+date:   2022-04-07 02:05:53 +0900
+categories: jekyll update
+
+---
+
 # Interview 준비
 
 ## 1. 채용의 입장에서
