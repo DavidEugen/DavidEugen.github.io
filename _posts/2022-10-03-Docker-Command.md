@@ -34,7 +34,9 @@ Docker 파일 시스템 위치등을 알 수 있다.
 sudo docker exec -it [컨테이너명] /bin/bash
 ```
 
+```-i --interactive ``` Keep STDIN open even if not attached
 
+ ```-t --tty``` Allocate a pseudo-TTY
 
 ### Host와 Docker Container 간 파일 복사
 
