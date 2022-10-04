@@ -45,7 +45,7 @@ sudo -i
 docker 를 설치해 주자.
 
 ``` bash
-apt intall docker.io
+sudo apt intall docker.io
 ```
 
 설치가 완료되고 ``` docker ``` 라 입력하면 docker에서 쓸 수 있는 명령어를 조회 하며 정상적인 도커설치를 확인 할 수 있다.
@@ -59,13 +59,13 @@ apt intall docker.io
 이미지를 찾아보자.
 
 ```bash
-docker search [이미지명]
+sudo docker search [이미지명]
 ```
 
 검색을 통해 찾은 정확한 이미지 명을 복사해서 다음을 넣어준다.
 
 ``` bash
-docker run -d -p <Host Port>:<Container Port> --name [내가 지정할 컨테이너 명] [찾은 이미지 명]
+sudo docker run -d -p <Host Port>:<Container Port> --name [내가 지정할 컨테이너 명] [찾은 이미지 명]
 
 ```
 
@@ -76,7 +76,7 @@ docker run -d -p <Host Port>:<Container Port> --name [내가 지정할 컨테이
 현재 실행중인 프로세스를 확인해 보자.
 
 ``` bash
-docker ps
+sudo docker ps
 ```
 
 tomcat이 정상적으로 떠 있는 것을 확인 했다면 브라우저에서 ``` localhost:8080```으로 tomcat이 떴는지 확인해 보자.

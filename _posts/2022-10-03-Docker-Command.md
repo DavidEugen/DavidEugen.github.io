@@ -61,7 +61,7 @@ sudo docker rm `sudo docker ps -a -q`
 ### 임시 Docker Container 생성
 
 ``` bash
-sudo docker run -d -p 80:8080 --rm --name tc tomcat 
+sudo docker run -d -p 80:8080 --rm --name [container 명] [이미지명] 
 ```
 
 ```--rm``` 을 통해 stop시 컨테이너가 삭제된다.
