@@ -54,6 +54,8 @@ sudo docker stop `sudo docker ps -a -q`
 sudo docker rm `sudo docker ps -a -q`
 ```
 
+`` 을 이용해 결과를 변수로 사용 할 수 있다.
+
 ```-q``` 는 ID 만 조회 한다.
 
 
@@ -68,7 +70,59 @@ sudo docker run -d -p 80:8080 --rm --name [container 명] [이미지명]
 
 
 
+### Docker Container Log 확인
+
+```bash
+sudo docker logs [container 명] # stdout, stderr
+```
 
 
 
 
+
+## Docker 실행 예제
+
+### Docker Container 환경변수 설정 - MySql Container 실행
+
+Docker Hub에 가면 상세 사용법이 나와 있다. https://hub.docker.com/_/mysq
+
+``` bash
+sudo docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+```
+
+``` -e```  환경 변수를 입력할때 옵션
+
+환경 변수 값은 ```'```(Singl Quotation)을 사용하여 넣어준다. 아니면 명령어로 인식하여 오류가 날 수 있다.
+
+### MySql Container Bash 실행
+
+``` bash
+sudo docker exec -it mysql bash
+```
+
+```printenv```를 통해 환경 변수를 확인해 보자..
+
+```bash
+printenv # 환경변수 전체를 보여준다.
+printenv env_name #env_name이라는 환경 변수를 찾는다.
+echo $env_name #env_name이라는 환경 변수를 찾는다.
+
+```
+
+
+
+### Docker Conatiner 볼륨 마운트 설정
+
+``` bash
+docker run -v <host 경로>:<Container 경로>:<권한> 
+```
+
+
+
+
+
+
+
+
+
+  
