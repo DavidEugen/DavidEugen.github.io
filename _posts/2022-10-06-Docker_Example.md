@@ -53,6 +53,8 @@ DB 같이 영구적으로 관리되어야 할 자료를 Container로 관리하�
 
 
 
+
+
 ## Jupyter Notebook 설치하기
 
 Jupyter Notebook 설정을 통해 마운트 설정방법을 알아보자.
@@ -74,7 +76,6 @@ docker run -v <host 경로>:<Container 경로>:<권한>
 <host 경로>로 연결하는 것은 bindmount 가 된다.
 
 
-
 ``` bash
 mkdir jupyternotebook
 chmod 777 ./jupyternotebook
@@ -88,3 +89,121 @@ docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/wo
 
 
 
+## Docker Image 빌드하기
+
+### application 작성
+
+우선 빌드할 프로그램을 작성해 보자.
+
+
+파이선으로 소켓을 이용해 입력한 데이터를 response해주는 프로그램이다.
+
+``` python
+  # test_server.py
+  import socket
+  with socket.socket() as s:
+    s.bind(("0.0.0.0", 12345))
+    s.listen()
+    print("server is started")
+    conn, addr = s.accept()
+    # conn 클라이언트와 통신할 소켓
+    # addr 클라이언트의 정보가 들어있음
+    with conn:
+      print("Connected by", addr)
+      while True:
+        data = conn.recv(1024)
+        if not data: break
+        conn.sendall(data)
+```
+
+  해당 프로그램을 테스트 해 보자...
+
+  ``` bash
+  # Terminal 1
+  python3 test_server.py
+  ---
+  # Terminal 2
+  nc 127.0.0.1 12345
+  ```
+
+
+
+### dockerfile 생성
+
+docker file 작성
+
+``` dockerfile
+FROM python:3.7 # python 3.7 Image를 사용 하여 작성
+
+RUN mkdir /echo 
+COPY test_server.py /echo
+
+CMD ["python", "/echo/test_server.py"] 
+```
+
+RUN 명령은 빌드시 실행하는 명령
+
+CMD 는 컨테이너 실행시 실행하는 명령
+
+이때 COPY 명령에서 현재 경로의 test_server.py를 복사하는 것이므로 dockerfile과 동일한 위치에 있어야 한다.
+
+
+
+### 빌드후 테스트
+
+``` bash
+sudo docker build -t ehco_test . # sudo docker build -t <image 명> <dockerfile위치>
+```
+
+```-t``` 는 ``` --tag ``` 를 의미하며 저장소 이름, 이미지 이름 태그를 설정한다. ```<repository 명>/<image 명>:<tag 명>```
+
+```bash
+sudo docker images
+sudo docker run -t -p 12345:12345 --name et --rm echo_test
+```
+
+
+
+``` bash
+nc 127.0.0.1 12345
+```
+
+
+
+
+
+### Docker Image Push
+
+``` bash
+sudo docker login
+
+sudo docker tag echo_test platonicojju/echo_test:v1 # docker tag <변경전 이미지명> <변경후 이미지명>
+
+sudo docker images
+sudo docker push platonicojju/echo_test:v1
+```
+
+Image를 push 하기 위해서 먼저 dockerhub에 login이 되어 있어야 한다.
+
+기본적으로 이미지를 생성하면 ```:lastest```가 따라 붙는다. ``` docker tag``` 를 이용해서 Image 명 및 tag를 변경 할 수 있다. 
+
+
+
+### Docker Private Repository
+
+registry 라는 이미지를 통해 내부 repository를 구성할 수 있다.
+
+``` bash
+sudo docker run -d --name docker-registry -p 5000:5000 registry
+```
+
+실행 후 브라우저를 통해 ```http://127.0.0.1:5000/v2/``` 접속이 가능한지 확인한다.
+
+``` bash
+sudo docker tag platonicojju/echo_test:latest 127.0.0.1:5000/echo_test
+sudo docker push 127.0.0.1:5000/echo_test
+```
+
+이미지를 private repository에 올려 본다.
+
+```http://127.0.0.1:5000/v2/_catalog ```을 통해 resitry를 확인 할 수 있다.
