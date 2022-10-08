@@ -28,7 +28,18 @@ sudo docker images # 이미지 조회
 sudo docker rmi [image] # 이미지 삭제
 ```
 
+### Filter를 사용한 Image 삭제
 
+``` bash
+sudo docker rmi $(docker images -q --filter "reference=ngi*")
+sudo docker rmi $(docker images | grep "ngi*" | awk '{print $3}')
+```
+
+[필터를 사용한 Docker Image 삭제 방법](https://velog.io/@soonbee/docker-image%EB%A5%BC-%EC%82%AD%EC%A0%9C%ED%95%98%EB%8A%94-%EB%8B%A4%EC%96%91%ED%95%9C-%EB%B0%A9%EB%B2%95%EB%93%A4) 참고
+
+```awk '{print $3}``` 에서 ```$3```은 Image Id 가 3번째 열이므로..
+
+ 
 
 ### Docker Container 생성
 
