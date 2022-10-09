@@ -19,7 +19,7 @@ https://blog.jetbrains.com/ko/2020/03/11/top-15-intellij-idea-shortcuts_ko/
 |파일 패키지 등..새로 생성|cmd + N|ctrl + n|파일 탐색창에서|
 |contructor, getter,setter..새로 생성|cmd + N, ctrl + enter|alt + insert|Editor 창에서|
 |코드 어시스턴트 ( Show Context Actions)|opt + enter|ctrl + 1||
-|소스정리 (Reformat Code)|cmd + opt + L|ctrl + shift + F||
+|소스정리 (Reformat Code)<br />스타일 정리|cmd + opt + L|ctrl + shift + F||
 |자동 임포트 정리(Optimize Imports)|ctrl + opt + O|ctrl + shift + O||
 |테스트 케이스 생성,이동|cmd + shift + T|||
 |코드 줄 복사 |cmd + D|ctrl + shift + 위 아래 방향키||
@@ -29,6 +29,9 @@ https://blog.jetbrains.com/ko/2020/03/11/top-15-intellij-idea-shortcuts_ko/
 |리팩터링 |cmd + opt + M| alt + shift + M ||
 |실행 |ctrl + R|  ||
 |디버그 |ctrl + D| ||
+|열편집<br />Column Selection Mode |Cmd + Shift + 8| ALT + SHIFT + INSERT |Shift + 상하 방향키로 선택할 수 있다.<br />열편집 모드 종료는 Cmd + Shift + 8 한번 더 눌러 준다.<br />열 편집 모드는 탭마다 독립적으로 적용된다.|
+| ||  ||
+| ||  ||
 
 
 
