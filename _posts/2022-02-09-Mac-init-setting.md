@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "맥 적응기"
+date:   2022-02-09 10:43:53 +0900
+categories: jekyll update
+
+---
+
 # 맥 적응기
 
 ## 세팅하기

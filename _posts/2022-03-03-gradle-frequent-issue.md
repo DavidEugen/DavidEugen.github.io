@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Gradle에서 자주 일어나는 문제"
+date:   2022-03-03 10:43:55 +0900
+categories: jekyll update
+
+---
+
 # Gradle에서 자주 일어나는 문제
 
 

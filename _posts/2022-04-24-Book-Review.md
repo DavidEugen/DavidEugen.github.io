@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "머신러닝 딥러닝 문제해결 전략"
+date:   2022-04-24 10:43:53 +0900
+categories: jekyll update
+
+---
+
 # 머신러닝 딥러닝 문제해결 전략
 
 

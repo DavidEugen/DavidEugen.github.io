@@ -54,7 +54,7 @@ sudo docker stop `sudo docker ps -a -q` # sudo docker stop $(sudo docker ps -a -
 sudo docker rm `sudo docker ps -a -q` # sudo docker rm $(sudo docker ps -a -q) 동일
 ```
 
-```-q``` 는 ID 만 조회 한다.2
+```-q``` 는 ID 만 조회 한다.
 
 
 

@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Git에서 자주 일어나는 이슈 정리"
+date:   2022-03-02 10:43:55 +0900
+categories: jekyll update
+
+---
+
 # Git에서 자주 일어나는 이슈 정리
 
 ## [ ] conflict  case 확인 필요

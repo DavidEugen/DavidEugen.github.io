@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Design Pattern"
+date:   2022-04-21 10:43:53 +0900
+categories: jekyll update
+
+---
+
 # Design Pattern
 
 ---

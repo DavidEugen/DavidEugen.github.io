@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "올해 목표"
+date:   2022-01-04 10:43:53 +0900
+categories: jekyll update
+
+---
+
 # 올해 목표
 
 ## 접근

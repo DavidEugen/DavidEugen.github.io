@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Git Ignore 파일 사후 적용"
+date:   2022-04-11 10:43:53 +0900
+categories: jekyll update
+
+---
+
 # GIT Ignore 파일 사후 적용
 
 Git Ignore에 추가된 부분 차후 적용시 Git에서 삭제하는 방법
@@ -6,7 +14,7 @@ Git Ignore에 추가된 부분 차후 적용시 Git에서 삭제하는 방법
 
  ```git rm <fileName>```
  작업 디렉토리와 스테이징 영역에서 파일을 삭제
- 
+
  ```git rm --cached <fileName>```
  스테이징 영역에서만 파일이 삭제. 작업 디렉토리나 저장소에서는 삭제되지 않음
 

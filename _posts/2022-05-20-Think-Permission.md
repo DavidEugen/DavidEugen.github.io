@@ -1,4 +1,12 @@
-# Permmision에 대한 생각
+---
+layout: post
+title:  "Permission에 대한 나의 생각"
+date:   2022-05-20 10:43:53 +0900
+categories: jekyll update
+
+---
+
+# Permission에 대한 생각
 
 Mac을 사용하면서 터미널 사용이 늘어났다. 그러다 보니 실행 권한에 대해서도 한번 더 생각해 보는 계기가 되는 듯 하다.
 

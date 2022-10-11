@@ -8,7 +8,7 @@ categories: jekyll update
 
 # 프로그래밍 특수문자 영문 명칭
 
-이 문서는 검색의 용이성을 위해, 코드 작성시 만날 수 있는 특수문자 ( Special character, Wildcard character ) 혹은 기호 ( Symbol ) 들의 영문 명칭을 정리하였습니다. 정확한 명칭보다는 잘못 불리어 사용되는 용어들도 함께 포함 하였음을 미리 알려드립니다. 되도록 키보드의 문자 배치 좌측 상단 부터 작성하였음 알려드립니다. 
+이 문서는 검색의 용이성을 위해, 코드 작성시 만날 수 있는 특수문자 ( Special character, Wildcard character ) 혹은 기호 ( Symbol ) 들의 영문 명칭을 정리하였습니다. 정확한 명칭보다는 잘못 불리어 사용되는 용어들도 함께 포함되어 있으니 참고 바랍니다. 되도록 키보드의 문자 배치 좌측 상단 부터 작성하였습니다. 
 
 | Symbol | Name             | called other names<br />* *It could be misleading terms.*    | 한글 명칭  사례<br />잘못 불리우는 사례 포함                |
 | ------ | ---------------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
@@ -49,4 +49,7 @@ categories: jekyll update
 
 2. [English Symbol](https://en.wikipedia.org/wiki/List_of_typographical_symbols_and_punctuation_marks)
 
+3. [keyboard Symbols2](https://finallylearn.com/what-are-the-keyboard-symbol-names/)
+
    
+

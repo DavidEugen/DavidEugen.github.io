@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Intellij Issue Case"
+date:   2022-03-19 10:43:55 +0900
+categories: jekyll update
+
+---
+
 # Intellij Issue Case
 
 ## case 1.
