@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Docker 실행 예제"
+subtitle: "예제 컨테이너를 실행하면서 알아보는 Docker 명령어들을 학습해 봅니다."
 date:   2022-10-06 14:05:53 +0900
 categories: jekyll update
 
@@ -8,7 +9,7 @@ categories: jekyll update
 
 # Docker 실행 예제
 
-
+예제 컨테이너를 실행하면서 알아보는 Docker 명령어들을 학습해 봅니다.
 
 ## MySql Container 실행
 
@@ -77,9 +78,9 @@ https://github.com/jupyter/docker-stacks
 docker run -v <host 경로>:<Container 경로>:<권한> 
 ```
 
-<host 경로>에  이미 volume 이 있으면 <volume 명> 을 적으면 되며 이는 Volume 연결이 된다.
+`<host 경로>`에  이미 volume 이 있으면 `<volume 명>` 을 적으면 되며 이는 Volume 연결이 된다.
 
-<host 경로>로 연결하는 것은 bindmount 가 된다.
+`<host 경로>`로 연결하는 것은 bindmount 가 된다.
 
 
 ``` bash

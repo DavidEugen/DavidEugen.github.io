@@ -1,5 +1,6 @@
 ---
 layout: default
+comments: true
 ---
 
 <!-- Page Header -->
@@ -33,6 +34,10 @@ layout: default
       <div class="col-lg-8 col-md-10 mx-auto">
 
         {{ content }}
+
+        {% if site.disqus_shortname and page.layout == 'post' %}
+          {% include comments.html %}
+        {% endif %}
 
         <hr>
 

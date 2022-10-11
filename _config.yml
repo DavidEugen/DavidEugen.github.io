@@ -1,9 +1,34 @@
+# -----------------------------------------------------------------------------
+#  User configuration
+# -----------------------------------------------------------------------------
+
 title:              DavidEugen DEV NOTE
-email:              java_dev_85@kakao.com
+
+# A short description of the page, used in the sidebar and as fallback for the meta description tag.
+# Markdown enabled, but don't use more than one paragraph (enforced by `>`)
 description:        Java, Spring, OOP, DDD, TDD, MSA
-author:             DavidEugen
-#baseurl:            "/DavidEugen"
+
+# The unique resource location of your page.
+# Set to `https://<username>.github.io` when hosting on GitHub Pages
 url:                "https://DavidEugen.github.io"
+
+# Set to '' when hosting a blog on GitHub Pages, ie on `//<username>.github.io`
+# Set to '/<reponame>' when using the `gh-pages` branch of a repository
+baseurl:            ""
+
+
+email:              java_dev_85@kakao.com
+author:             DavidEugen
+
+# The font used for headings. Expects a string that is a valid CSS font-family value.
+font_heading:        "'Merriweather-Light','Lato','-apple-system','Verdana','PingFang SC','Helvetica Neue','Arial','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei','sans-serif'"
+
+# The text font. Expects a string that is a valid CSS font-family value.
+font:                "'Merriweather-Light','Lato','-apple-system','Verdana','PingFang SC','Helvetica Neue','Arial','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei','sans-serif'"
+
+# The string encoding what fonts to fetch from Google Fonts.
+# See: https://qwtel.com/hydejack/docs/configuration/
+google_fonts:        Lato
 
 
 # Social Profiles
@@ -14,7 +39,11 @@ instagram_username:
 linkedin_username:
 
 # Add your google-analytics ID here to activate google analytics
-google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
+google_analytics:   G-YNS6PM2NCK # out your google-analytics code
+
+# Setting a disqus shortname will enable the comment section on pages with `comments: true` in the front matter
+disqus: True
+disqus_shortname:    DavidEugen
 
 # Build settings
 markdown:           kramdown
