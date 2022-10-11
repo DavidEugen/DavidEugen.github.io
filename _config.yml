@@ -16,7 +16,6 @@ url:                "https://DavidEugen.github.io"
 # Set to '/<reponame>' when using the `gh-pages` branch of a repository
 baseurl:            ""
 
-
 email:              java_dev_85@kakao.com
 author:             DavidEugen
 
@@ -30,25 +29,33 @@ font:                "'Merriweather-Light','Lato','-apple-system','Verdana','Pin
 # See: https://qwtel.com/hydejack/docs/configuration/
 google_fonts:        Lato
 
-
 # Social Profiles
-#twitter_username:   DavidEugen
 github_username:    DavidEugen
+linkedin_username:  java-dev-joohoyoon
+#twitter_username:  DavidEugen
 #facebook_username: DavidEugen
-instagram_username:  
-linkedin_username:
+#instagram_username:
 
 # Add your google-analytics ID here to activate google analytics
 google_analytics:   G-YNS6PM2NCK # out your google-analytics code
 
 # Setting a disqus shortname will enable the comment section on pages with `comments: true` in the front matter
-disqus: True
+disqus: true
 disqus_shortname:    DavidEugen
 
-# Build settings
-markdown:           kramdown
-paginate:           5
+# markdown setting
+#markdown:           kramdown
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# Paginate
+paginate:           10
 paginate_path:      "/posts/page:num/"
+
+# Plugins
 plugins:
   - jekyll-feed
   - jekyll-paginate
