@@ -37,7 +37,6 @@ sudo docker exec -it some-mysql bash
 printenv # 환경변수 전체를 보여준다.
 printenv env_name #env_name이라는 환경 변수를 찾는다.
 echo $env_name #env_name이라는 환경 변수를 찾는다.
-
 ```
 
 
@@ -89,7 +88,6 @@ chmod 777 ./jupyternotebook
 cd jupyternotebook
 
 docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/work:rw jupyter/datascience-notebook
-
 ```
 
 
@@ -174,8 +172,6 @@ sudo docker run -t -p 12345:12345 --name et --rm echo_test
 ``` bash
 nc 127.0.0.1 12345
 ```
-
-
 
 
 
