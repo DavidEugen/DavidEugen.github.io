@@ -47,6 +47,34 @@ categories: jekyll update
 
 
 
+## 맥에서 단축키 
+
+| 기호  | 설명                   | 단축키          | 비고 |
+| ----- | ---------------------- | --------------- | ---- |
+| **…** | **Ellipsis**           | **Opt + ;**     |      |
+| ‹     | Single left guillemet  | Shift + Opt + 3 |      |
+| ›     | Singe right guillemet  | Shift + Opt + 4 |      |
+| «     | Double left guillemet  | Opt + \         |      |
+| »     | Double right guillemet | Shift + Opt + \ |      |
+| ÷     | Division               | Opt + /         |      |
+| ∞     | Infinity               | Opt + 5         |      |
+| §     | Section                | Opt + 6         |      |
+| •     | Bullet                 | Opt + 8         |      |
+| °     | Degree                 | Shift + Opt + 8 |      |
+| ·     | Rasied dot             | Shift + Opt + 9 |      |
+| **≈** | **Approximately**      | **Opt + x**     |      |
+| ≥     | Greater than or        | Opt + .         |      |
+| ≤     | Less than or           | Opt + ,         |      |
+| **≠** | **Not**                | **Opt + =**     |      |
+| ±     | Plus Or Minus          | Shift + Opt + = |      |
+| ∫     | Integral               | Opt + b         |      |
+| ‰     | Per Thousand           | Shift + Opt + r |      |
+| ∂     | Partial differential   | Opt + d         |      |
+| √     |                        | Opt + v         |      |
+| ∑     | Summation              | Opt + w         |      |
+
+
+
 ---
 
 1. [keyboard Symbols](https://www.computerhope.com/keys.htm)
