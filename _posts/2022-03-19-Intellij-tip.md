@@ -30,8 +30,8 @@ https://blog.jetbrains.com/ko/2020/03/11/top-15-intellij-idea-shortcuts_ko/
 |실행 |ctrl + R|  ||
 |디버그 |ctrl + D| ||
 |열편집<br />Column Selection Mode |Cmd + Shift + 8| ALT + SHIFT + INSERT |Shift + 상하 방향키로 선택할 수 있다.<br />열편집 모드 종료는 Cmd + Shift + 8 한번 더 눌러 준다.<br />열 편집 모드는 탭마다 독립적으로 적용된다.|
-| ||  ||
-| ||  ||
+| Build a method hierarchy |Shift + Cmd + H|  ||
+| Build a call hierarchy |Ctrl + Opt + H|  ||
 
 
 
