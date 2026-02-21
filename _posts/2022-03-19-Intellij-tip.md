@@ -36,7 +36,7 @@ https://blog.jetbrains.com/ko/2020/03/11/top-15-intellij-idea-shortcuts_ko/
 
 
 
-* 이클립스 윈도우 단축키는 생각나는 대로 적는것, 비교, 참고용
+* 이클립스 윈도우 단축키는 생각나는 대 로 적는것, 비교, 참고용
 
 
 

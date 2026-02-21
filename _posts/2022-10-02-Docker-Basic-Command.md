@@ -31,6 +31,7 @@ sudo docker rmi [image] # 이미지 삭제
 ### Filter를 사용한 Image 삭제
 
 ``` bash
+# ngi을 포함한 이미지 지우기
 sudo docker rmi $(docker images -q --filter "reference=ngi*")
 sudo docker rmi $(docker images | grep "ngi*" | awk '{print $3}')
 ```
