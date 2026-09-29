@@ -6,7 +6,7 @@ categories: think
 
 ---
 
-
+```plain
 [manifest.json]=========
 {
   "manifest_version": 3,
@@ -1227,3 +1227,5 @@ initialize().catch((error) => {
   setConnection(false);
   setStatus(error?.message || "확장 프로그램을 초기화하지 못했습니다.", "error");
 });
+```
+
