@@ -10,13 +10,15 @@ categories: think
 [manifest.json]=========
 {
   "manifest_version": 3,
-  "name": "화면 캡처 도구",
-  "description": "URL이 바뀌지 않는 JSP 업무 화면의 메뉴 경로를 추적하고 지정한 이름으로 캡처합니다.",
-  "version": "1.1.0",
-  "minimum_chrome_version": "114",
+  "name": "JSP 화면 캡처 도구",
+  "description": "JSP 업무 화면의 메뉴 경로를 추적해 PNG로 저장하고 클립보드에 복사합니다.",
+  "version": "1.2.0",
+  "minimum_chrome_version": "109",
   "permissions": [
     "activeTab",
+    "clipboardWrite",
     "downloads",
+    "offscreen",
     "storage",
     "tabs"
   ],
@@ -27,7 +29,7 @@ categories: think
     "service_worker": "service-worker.js"
   },
   "action": {
-    "default_title": "화면 캡처 도구 열기",
+    "default_title": "JSP 화면 캡처 도구 열기",
     "default_popup": "popup.html"
   },
   "content_scripts": [
@@ -58,6 +60,8 @@ categories: think
 "use strict";
 
 const STATE_KEY = "jspCaptureToolState";
+const OFFSCREEN_DOCUMENT_PATH = "offscreen.html";
+let creatingOffscreenDocument = null;
 
 function compactText(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -102,6 +106,48 @@ async function getActiveTab() {
   return tab;
 }
 
+async function hasOffscreenDocument() {
+  const offscreenUrl = chrome.runtime.getURL(OFFSCREEN_DOCUMENT_PATH);
+  if (chrome.runtime.getContexts) {
+    const contexts = await chrome.runtime.getContexts({
+      contextTypes: ["OFFSCREEN_DOCUMENT"],
+      documentUrls: [offscreenUrl]
+    });
+    return contexts.length > 0;
+  }
+
+  const matchedClients = await clients.matchAll();
+  return matchedClients.some((client) => client.url === offscreenUrl);
+}
+
+async function ensureOffscreenDocument() {
+  if (await hasOffscreenDocument()) {
+    return;
+  }
+  if (!creatingOffscreenDocument) {
+    creatingOffscreenDocument = chrome.offscreen.createDocument({
+      url: OFFSCREEN_DOCUMENT_PATH,
+      reasons: ["CLIPBOARD"],
+      justification: "캡처한 PNG 이미지를 클립보드에 복사합니다."
+    }).finally(() => {
+      creatingOffscreenDocument = null;
+    });
+  }
+  await creatingOffscreenDocument;
+}
+
+async function copyCaptureToClipboard(dataUrl) {
+  await ensureOffscreenDocument();
+  const response = await chrome.runtime.sendMessage({
+    target: "offscreen",
+    type: "COPY_CAPTURE_IMAGE",
+    dataUrl
+  });
+  if (!response?.ok) {
+    throw new Error(response?.error || "클립보드에 이미지를 복사하지 못했습니다.");
+  }
+}
+
 async function captureVisible(values) {
   const tab = await getActiveTab();
   const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
@@ -114,7 +160,17 @@ async function captureVisible(values) {
     conflictAction: "uniquify",
     saveAs: false
   });
-  return { downloadId, filename };
+  try {
+    await copyCaptureToClipboard(dataUrl);
+    return { downloadId, filename, clipboardCopied: true };
+  } catch (error) {
+    return {
+      downloadId,
+      filename,
+      clipboardCopied: false,
+      clipboardError: error?.message || "클립보드 복사에 실패했습니다."
+    };
+  }
 }
 
 async function valuesForShortcut() {
@@ -127,7 +183,13 @@ async function valuesForShortcut() {
   } catch (error) {
     // 기본 프로필을 사용합니다.
   }
-  const menuValues = state.profiles?.[siteKey]?.values || {};
+  const profileValues = state.profiles?.[siteKey]?.values || {};
+  const cacheKey = `menuState:${tab.id}`;
+  const cached = await chrome.storage.session.get(cacheKey);
+  const menuValues = {
+    ...profileValues,
+    ...(cached[cacheKey]?.values || {})
+  };
   const values = {
     folder: state.folder || "화면캡처",
     gnb: menuValues.gnb || "",
@@ -216,8 +278,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const LEVELS = [
     {
       key: "gnb",
+      activeSelectors: [
+        "#mainMenu > ul.menu_dep1 > li.active",
+        "#mainMenu ul.menu_dep1 > li.active"
+      ],
+      clickSelectors: [
+        "#mainMenu > ul.menu_dep1 > li > a",
+        "#mainMenu ul.menu_dep1 > li > a",
+        "#mainMenu > ul.menu_dep1 > li",
+        "#mainMenu ul.menu_dep1 > li"
+      ],
       selectors: [
         "[data-capture-menu-level='gnb']",
+        "#mainMenu",
         "#gnb",
         ".gnb",
         "[class~='gnb' i]",
@@ -226,8 +299,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     },
     {
       key: "subGnb",
+      activeSelectors: [
+        "#mainMenu > ul.sub_menu > li.active",
+        "#mainMenu ul.sub_menu > li.active"
+      ],
+      clickSelectors: [
+        "#mainMenu > ul.sub_menu > li > a",
+        "#mainMenu ul.sub_menu > li > a",
+        "#mainMenu > ul.sub_menu > li",
+        "#mainMenu ul.sub_menu > li"
+      ],
       selectors: [
         "[data-capture-menu-level='subGnb']",
+        "#mainMenu > ul.sub_menu",
+        "#mainMenu ul.sub_menu",
+        ".sub_menu",
         "#subGnb",
         "#sub-gnb",
         ".subGnb",
@@ -238,8 +324,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     },
     {
       key: "lnb",
+      activeSelectors: [
+        "aside#lnb > ul#maindiv > li.depth.active",
+        "#lnb ul#maindiv > li.depth.active"
+      ],
+      clickSelectors: [
+        "aside#lnb > ul#maindiv > li.depth > strong > a",
+        "#lnb ul#maindiv > li.depth > strong > a",
+        "aside#lnb > ul#maindiv > li.depth > a",
+        "#lnb ul#maindiv > li.depth > a"
+      ],
       selectors: [
         "[data-capture-menu-level='lnb']",
+        "aside#lnb",
         "#lnb",
         ".lnb",
         "[class~='lnb' i]",
@@ -248,8 +345,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     },
     {
       key: "subLnb",
+      activeSelectors: [
+        "aside#lnb > ul#maindiv > li.depth.active > ul > li.active",
+        "#lnb ul#maindiv > li.depth.active > ul > li.active"
+      ],
+      clickSelectors: [
+        "aside#lnb > ul#maindiv > li.depth > ul > li > a",
+        "#lnb ul#maindiv > li.depth > ul > li > a",
+        "aside#lnb > ul#maindiv > li.depth > ul > li",
+        "#lnb ul#maindiv > li.depth > ul > li"
+      ],
       selectors: [
         "[data-capture-menu-level='subLnb']",
+        "aside#lnb > ul#maindiv > li.depth.active > ul",
+        "#lnb ul#maindiv > li.depth.active > ul",
         "#subLnb",
         "#sub-lnb",
         ".subLnb",
@@ -345,10 +454,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return "";
   }
 
+  function activeLabelForLevel(level) {
+    for (const selector of level.activeSelectors || []) {
+      const activeItem = firstVisible(selector);
+      const text = labelFor(activeItem);
+      if (text) {
+        return text;
+      }
+    }
+    return activeLabel(findContainer(level));
+  }
+
   function detectValues() {
     const detected = {};
     for (const level of LEVELS) {
-      const value = activeLabel(findContainer(level));
+      const value = activeLabelForLevel(level);
       if (value) {
         detected[level.key] = value;
       }
@@ -385,6 +505,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   function levelForElement(element) {
     const reversed = [...LEVELS].reverse();
+    for (const level of reversed) {
+      for (const selector of level.clickSelectors || []) {
+        try {
+          if (element.matches(selector) || element.closest(selector)) {
+            return level.key;
+          }
+        } catch (error) {
+          // 유효하지 않은 사이트 선택자는 건너뜁니다.
+        }
+      }
+    }
     for (const level of reversed) {
       for (const selector of level.selectors) {
         try {
@@ -563,7 +694,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           <span class="camera-icon" aria-hidden="true"></span>
           <span>
             <strong>현재 화면 캡처</strong>
-            <small>보이는 웹 화면을 PNG로 저장</small>
+            <small>PNG로 저장하고 클립보드에도 복사</small>
           </span>
         </button>
 
@@ -906,6 +1037,10 @@ main {
   color: #c43749;
 }
 
+.status-message.warning {
+  color: #a35b00;
+}
+
 .status-message.working {
   color: #315fd7;
 }
@@ -1177,7 +1312,7 @@ elements.form.addEventListener("submit", async (event) => {
   await saveState();
   elements.captureButton.disabled = true;
   elements.captureButton.classList.add("busy");
-  setStatus("현재 화면을 캡처하고 있습니다…", "working");
+  setStatus("현재 화면을 저장하고 클립보드에 복사하고 있습니다…", "working");
 
   try {
     const response = await chrome.runtime.sendMessage({
@@ -1187,7 +1322,14 @@ elements.form.addEventListener("submit", async (event) => {
     if (!response?.ok) {
       throw new Error(response?.error || "화면 캡처에 실패했습니다.");
     }
-    setStatus(`저장 완료: 다운로드/${response.data.filename}`, "success");
+    if (response.data.clipboardCopied) {
+      setStatus(`저장 및 클립보드 복사 완료: 다운로드/${response.data.filename}`, "success");
+    } else {
+      setStatus(
+        `파일은 저장했지만 클립보드 복사에 실패했습니다: ${response.data.clipboardError || "알 수 없는 오류"}`,
+        "warning"
+      );
+    }
   } catch (error) {
     setStatus(error?.message || "화면 캡처에 실패했습니다.", "error");
   } finally {
@@ -1227,5 +1369,46 @@ initialize().catch((error) => {
   setConnection(false);
   setStatus(error?.message || "확장 프로그램을 초기화하지 못했습니다.", "error");
 });
+
+[offscreen.html]=========
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>캡처 이미지 클립보드 복사</title>
+  </head>
+  <body>
+    <script src="offscreen.js"></script>
+  </body>
+</html>
+
+[offscreen.js]=========
+"use strict";
+
+async function copyPngToClipboard(dataUrl) {
+  if (!dataUrl || !dataUrl.startsWith("data:image/png")) {
+    throw new Error("복사할 PNG 캡처 데이터가 없습니다.");
+  }
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
+  await navigator.clipboard.write([
+    new ClipboardItem({ "image/png": blob })
+  ]);
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message?.target !== "offscreen" || message?.type !== "COPY_CAPTURE_IMAGE") {
+    return false;
+  }
+
+  copyPngToClipboard(message.dataUrl)
+    .then(() => sendResponse({ ok: true }))
+    .catch((error) => sendResponse({
+      ok: false,
+      error: error?.message || "클립보드에 이미지를 복사하지 못했습니다."
+    }));
+  return true;
+});
+
 ```
 
