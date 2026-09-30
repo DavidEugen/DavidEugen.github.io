@@ -12,13 +12,12 @@ categories: think
   "manifest_version": 3,
   "name": "JSP 화면 캡처 도구",
   "description": "JSP 업무 화면의 메뉴 경로를 추적해 PNG로 저장하고 클립보드에 복사합니다.",
-  "version": "1.2.0",
-  "minimum_chrome_version": "109",
+  "version": "1.2.1",
+  "minimum_chrome_version": "114",
   "permissions": [
     "activeTab",
     "clipboardWrite",
     "downloads",
-    "offscreen",
     "storage",
     "tabs"
   ],
@@ -60,8 +59,6 @@ categories: think
 "use strict";
 
 const STATE_KEY = "jspCaptureToolState";
-const OFFSCREEN_DOCUMENT_PATH = "offscreen.html";
-let creatingOffscreenDocument = null;
 
 function compactText(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -106,48 +103,6 @@ async function getActiveTab() {
   return tab;
 }
 
-async function hasOffscreenDocument() {
-  const offscreenUrl = chrome.runtime.getURL(OFFSCREEN_DOCUMENT_PATH);
-  if (chrome.runtime.getContexts) {
-    const contexts = await chrome.runtime.getContexts({
-      contextTypes: ["OFFSCREEN_DOCUMENT"],
-      documentUrls: [offscreenUrl]
-    });
-    return contexts.length > 0;
-  }
-
-  const matchedClients = await clients.matchAll();
-  return matchedClients.some((client) => client.url === offscreenUrl);
-}
-
-async function ensureOffscreenDocument() {
-  if (await hasOffscreenDocument()) {
-    return;
-  }
-  if (!creatingOffscreenDocument) {
-    creatingOffscreenDocument = chrome.offscreen.createDocument({
-      url: OFFSCREEN_DOCUMENT_PATH,
-      reasons: ["CLIPBOARD"],
-      justification: "캡처한 PNG 이미지를 클립보드에 복사합니다."
-    }).finally(() => {
-      creatingOffscreenDocument = null;
-    });
-  }
-  await creatingOffscreenDocument;
-}
-
-async function copyCaptureToClipboard(dataUrl) {
-  await ensureOffscreenDocument();
-  const response = await chrome.runtime.sendMessage({
-    target: "offscreen",
-    type: "COPY_CAPTURE_IMAGE",
-    dataUrl
-  });
-  if (!response?.ok) {
-    throw new Error(response?.error || "클립보드에 이미지를 복사하지 못했습니다.");
-  }
-}
-
 async function captureVisible(values) {
   const tab = await getActiveTab();
   const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
@@ -160,17 +115,7 @@ async function captureVisible(values) {
     conflictAction: "uniquify",
     saveAs: false
   });
-  try {
-    await copyCaptureToClipboard(dataUrl);
-    return { downloadId, filename, clipboardCopied: true };
-  } catch (error) {
-    return {
-      downloadId,
-      filename,
-      clipboardCopied: false,
-      clipboardError: error?.message || "클립보드 복사에 실패했습니다."
-    };
-  }
+  return { downloadId, filename };
 }
 
 async function valuesForShortcut() {
@@ -1106,6 +1051,33 @@ function sanitizeFolder(value) {
     .join("/") || "화면캡처";
 }
 
+function buildDownloadFilename(values) {
+  const parts = [
+    sanitizePart(values.gnb, "GNB"),
+    sanitizePart(values.subGnb, "SubGNB"),
+    sanitizePart(values.lnb, "LNB"),
+    sanitizePart(values.subLnb, "SubLNB"),
+    sanitizePart(values.action, "액션")
+  ];
+  return `${sanitizeFolder(values.folder)}/${parts.join("_")}.png`;
+}
+
+async function copyPngToClipboard(dataUrl) {
+  if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+    throw new Error("이 Edge 버전에서는 이미지 클립보드를 사용할 수 없습니다.");
+  }
+
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
+  const pngBlob = blob.type === "image/png"
+    ? blob
+    : new Blob([await blob.arrayBuffer()], { type: "image/png" });
+
+  await navigator.clipboard.write([
+    new ClipboardItem({ "image/png": pngBlob })
+  ]);
+}
+
 function normalizedState(value) {
   const saved = value && typeof value === "object" ? value : {};
   const histories = {};
@@ -1315,20 +1287,40 @@ elements.form.addEventListener("submit", async (event) => {
   setStatus("현재 화면을 저장하고 클립보드에 복사하고 있습니다…", "working");
 
   try {
-    const response = await chrome.runtime.sendMessage({
-      type: "CAPTURE_VISIBLE",
-      values
+    const tabs = await chrome.tabs.query({
+      active: true,
+      currentWindow: true
     });
-    if (!response?.ok) {
-      throw new Error(response?.error || "화면 캡처에 실패했습니다.");
+    const tab = tabs[0];
+    if (!tab?.id || !/^https?:/i.test(tab.url || "")) {
+      throw new Error("캡처할 웹 페이지 탭을 먼저 선택해 주세요.");
     }
-    if (response.data.clipboardCopied) {
-      setStatus(`저장 및 클립보드 복사 완료: 다운로드/${response.data.filename}`, "success");
+
+    const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
+      format: "png"
+    });
+    const filename = buildDownloadFilename(values);
+    let clipboardError = "";
+
+    try {
+      // 포커스가 있는 확장 팝업에서 직접 PNG 이미지를 복사합니다.
+      await copyPngToClipboard(dataUrl);
+    } catch (error) {
+      clipboardError = error?.message || "클립보드 복사에 실패했습니다.";
+      console.error("클립보드 복사 실패:", error);
+    }
+
+    await chrome.downloads.download({
+      url: dataUrl,
+      filename,
+      conflictAction: "uniquify",
+      saveAs: false
+    });
+
+    if (clipboardError) {
+      setStatus(`파일은 저장했지만 클립보드 복사에 실패했습니다: ${clipboardError}`, "warning");
     } else {
-      setStatus(
-        `파일은 저장했지만 클립보드 복사에 실패했습니다: ${response.data.clipboardError || "알 수 없는 오류"}`,
-        "warning"
-      );
+      setStatus(`저장 및 클립보드 복사 완료: 다운로드/${filename}`, "success");
     }
   } catch (error) {
     setStatus(error?.message || "화면 캡처에 실패했습니다.", "error");
@@ -1370,45 +1362,6 @@ initialize().catch((error) => {
   setStatus(error?.message || "확장 프로그램을 초기화하지 못했습니다.", "error");
 });
 
-[offscreen.html]=========
-<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <title>캡처 이미지 클립보드 복사</title>
-  </head>
-  <body>
-    <script src="offscreen.js"></script>
-  </body>
-</html>
-
-[offscreen.js]=========
-"use strict";
-
-async function copyPngToClipboard(dataUrl) {
-  if (!dataUrl || !dataUrl.startsWith("data:image/png")) {
-    throw new Error("복사할 PNG 캡처 데이터가 없습니다.");
-  }
-  const response = await fetch(dataUrl);
-  const blob = await response.blob();
-  await navigator.clipboard.write([
-    new ClipboardItem({ "image/png": blob })
-  ]);
-}
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.target !== "offscreen" || message?.type !== "COPY_CAPTURE_IMAGE") {
-    return false;
-  }
-
-  copyPngToClipboard(message.dataUrl)
-    .then(() => sendResponse({ ok: true }))
-    .catch((error) => sendResponse({
-      ok: false,
-      error: error?.message || "클립보드에 이미지를 복사하지 못했습니다."
-    }));
-  return true;
-});
 
 ```
 
