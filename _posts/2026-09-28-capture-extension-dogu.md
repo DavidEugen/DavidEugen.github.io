@@ -12,7 +12,7 @@ categories: think
   "manifest_version": 3,
   "name": "JSP 화면 캡처 도구",
   "description": "JSP 업무 화면의 메뉴 경로를 추적해 PNG로 저장하고 클립보드에 복사합니다.",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "minimum_chrome_version": "109",
   "permissions": [
     "activeTab",
@@ -164,7 +164,7 @@ async function openShortcutCaptureWindow() {
   await chrome.windows.create({
     url: runnerUrl.href,
     type: "popup",
-    width: 390,
+    width: 430,
     height: 230,
     focused: true
   });
@@ -1119,23 +1119,24 @@ async function pngBlobFromDataUrl(dataUrl) {
     : new Blob([await blob.arrayBuffer()], { type: "image/png" });
 }
 
-function writePngBlobToClipboard(pngBlobOrPromise) {
+function writePngBlobToClipboard(pngBlob) {
   if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
     return Promise.reject(new Error("이 Edge 버전에서는 이미지 클립보드를 사용할 수 없습니다."));
   }
 
   try {
     return navigator.clipboard.write([
-      new ClipboardItem({ "image/png": pngBlobOrPromise })
+      new ClipboardItem({ "image/png": pngBlob })
     ]);
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-function copyPngToClipboard(dataUrlOrPromise) {
-  const pngBlobPromise = Promise.resolve(dataUrlOrPromise).then(pngBlobFromDataUrl);
-  return writePngBlobToClipboard(pngBlobPromise);
+async function copyPngToClipboard(dataUrl) {
+  const pngBlob = await pngBlobFromDataUrl(dataUrl);
+  await writePngBlobToClipboard(pngBlob);
+  return pngBlob;
 }
 
 function normalizedState(value) {
@@ -1373,23 +1374,19 @@ elements.form.addEventListener("submit", async (event) => {
   latestCaptureBlob = null;
   setStatus("현재 화면을 저장하고 클립보드에 복사하고 있습니다…", "working");
 
-  // Edge 109에서도 사용자 동작 권한을 유지하도록 첫 await 전에 복사를 예약합니다.
-  const capturePromise = chrome.tabs.captureVisibleTab(currentWindowId, { format: "png" });
-  const pngBlobPromise = capturePromise.then(pngBlobFromDataUrl);
-  pngBlobPromise
-    .then((blob) => {
-      latestCaptureBlob = blob;
-    })
-    .catch(() => undefined);
-  const clipboardResultPromise = writePngBlobToClipboard(pngBlobPromise)
-    .then(() => ({ ok: true }))
-    .catch((error) => ({ ok: false, error }));
-
   try {
     await saveState();
-    const dataUrl = await capturePromise;
+    const dataUrl = await chrome.tabs.captureVisibleTab(currentWindowId, { format: "png" });
     latestCaptureDataUrl = dataUrl;
     const filename = buildDownloadFilename(values);
+    let clipboardError = "";
+
+    try {
+      latestCaptureBlob = await copyPngToClipboard(dataUrl);
+    } catch (error) {
+      clipboardError = error?.message || "알 수 없는 오류";
+      console.warn("클립보드 복사 실패:", error);
+    }
 
     await chrome.downloads.download({
       url: dataUrl,
@@ -1398,9 +1395,7 @@ elements.form.addEventListener("submit", async (event) => {
       saveAs: false
     });
 
-    const clipboardResult = await clipboardResultPromise;
-    if (!clipboardResult.ok) {
-      const clipboardError = clipboardResult.error?.message || "알 수 없는 오류";
+    if (clipboardError) {
       elements.copyAgainButton.hidden = false;
       setStatus(`파일은 저장했지만 클립보드 복사에 실패했습니다: ${clipboardError}`, "warning");
     } else {
@@ -1613,18 +1608,40 @@ async function pngBlobFromDataUrl(dataUrl) {
     : new Blob([await blob.arrayBuffer()], { type: "image/png" });
 }
 
-function writePngBlobToClipboard(pngBlobOrPromise) {
+function writePngBlobToClipboard(pngBlob) {
   if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
     return Promise.reject(new Error("이 Edge 버전에서는 이미지 클립보드를 사용할 수 없습니다."));
   }
 
   try {
     return navigator.clipboard.write([
-      new ClipboardItem({ "image/png": pngBlobOrPromise })
+      new ClipboardItem({ "image/png": pngBlob })
     ]);
   } catch (error) {
     return Promise.reject(error);
   }
+}
+
+function withTimeout(promise, milliseconds, message) {
+  let timeoutId = 0;
+  const timeoutPromise = new Promise((resolve, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error(message)), milliseconds);
+  });
+  return Promise.race([promise, timeoutPromise])
+    .finally(() => window.clearTimeout(timeoutId));
+}
+
+async function focusRunnerWindow() {
+  try {
+    const currentWindow = await chrome.windows.getCurrent();
+    if (Number.isInteger(currentWindow?.id)) {
+      await chrome.windows.update(currentWindow.id, { focused: true });
+    }
+  } catch (error) {
+    console.warn("단축키 창 포커스 확인 실패:", error);
+  }
+  window.focus();
+  await new Promise((resolve) => window.setTimeout(resolve, 80));
 }
 
 async function runShortcutCapture() {
@@ -1635,19 +1652,8 @@ async function runShortcutCapture() {
     throw new Error("캡처할 원본 창 정보를 찾지 못했습니다.");
   }
 
-  // 포커스된 확장 창에서 첫 await 전에 클립보드 쓰기를 예약합니다.
-  const capturePromise = chrome.tabs.captureVisibleTab(sourceWindowId, { format: "png" });
-  const pngBlobPromise = capturePromise.then(pngBlobFromDataUrl);
-  pngBlobPromise
-    .then((blob) => {
-      latestPngBlob = blob;
-    })
-    .catch(() => undefined);
-  const clipboardResultPromise = writePngBlobToClipboard(pngBlobPromise)
-    .then(() => ({ ok: true }))
-    .catch((error) => ({ ok: false, error }));
-
-  const dataUrl = await capturePromise;
+  const dataUrl = await chrome.tabs.captureVisibleTab(sourceWindowId, { format: "png" });
+  latestPngBlob = await pngBlobFromDataUrl(dataUrl);
   await chrome.downloads.download({
     url: dataUrl,
     filename,
@@ -1655,12 +1661,18 @@ async function runShortcutCapture() {
     saveAs: false
   });
 
-  const clipboardResult = await clipboardResultPromise;
-  if (!clipboardResult.ok) {
+  await focusRunnerWindow();
+  try {
+    await withTimeout(
+      writePngBlobToClipboard(latestPngBlob),
+      5000,
+      "클립보드 응답 시간이 초과되었습니다. 아래 버튼으로 다시 시도해 주세요."
+    );
+  } catch (error) {
     elements.retryButton.hidden = false;
     elements.closeButton.hidden = false;
     setResult(
-      `파일은 저장했지만 클립보드 복사에 실패했습니다: ${clipboardResult.error?.message || "알 수 없는 오류"}`,
+      `파일은 저장했지만 클립보드 복사에 실패했습니다: ${error?.message || "알 수 없는 오류"}`,
       "error"
     );
     return;
@@ -1677,7 +1689,12 @@ elements.retryButton.addEventListener("click", () => {
   }
 
   elements.retryButton.disabled = true;
-  writePngBlobToClipboard(latestPngBlob)
+  focusRunnerWindow()
+    .then(() => withTimeout(
+      writePngBlobToClipboard(latestPngBlob),
+      5000,
+      "클립보드 응답 시간이 초과되었습니다."
+    ))
     .then(() => {
       setResult("클립보드에 PNG 이미지를 다시 복사했습니다.", "done");
       window.setTimeout(() => window.close(), 900);
@@ -1694,6 +1711,7 @@ runShortcutCapture().catch((error) => {
   elements.closeButton.hidden = false;
   setResult(error?.message || "단축키 캡처에 실패했습니다.", "error");
 });
+
 
 
 
