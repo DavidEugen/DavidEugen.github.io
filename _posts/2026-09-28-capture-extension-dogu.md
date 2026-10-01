@@ -12,8 +12,8 @@ categories: think
   "manifest_version": 3,
   "name": "JSP 화면 캡처 도구",
   "description": "JSP 업무 화면의 메뉴 경로를 추적해 PNG로 저장하고 클립보드에 복사합니다.",
-  "version": "1.2.1",
-  "minimum_chrome_version": "114",
+  "version": "1.3.0",
+  "minimum_chrome_version": "109",
   "permissions": [
     "activeTab",
     "clipboardWrite",
@@ -46,6 +46,11 @@ categories: think
     }
   ],
   "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+8"
+      }
+    },
     "capture-visible": {
       "suggested_key": {
         "default": "Ctrl+Shift+7"
@@ -644,6 +649,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         </button>
 
         <p id="statusMessage" class="status-message" role="status"></p>
+        <button id="copyAgainButton" class="retry-copy-button" type="button" hidden>
+          클립보드 다시 복사
+        </button>
       </form>
     </main>
 
@@ -990,6 +998,27 @@ main {
   color: #315fd7;
 }
 
+.retry-copy-button {
+  width: 100%;
+  margin-top: 2px;
+  padding: 8px 10px;
+  border: 1px solid #d6a550;
+  border-radius: 8px;
+  color: #8a4e00;
+  background: #fff8e9;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.retry-copy-button:hover {
+  background: #fff2d4;
+}
+
+.retry-copy-button[hidden] {
+  display: none;
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -1016,6 +1045,7 @@ const elements = {
   filenamePreview: document.querySelector("#filenamePreview"),
   detectMessage: document.querySelector("#detectMessage"),
   statusMessage: document.querySelector("#statusMessage"),
+  copyAgainButton: document.querySelector("#copyAgainButton"),
   connectionBadge: document.querySelector("#connectionBadge")
 };
 
@@ -1026,9 +1056,12 @@ let state = {
   profiles: {}
 };
 let currentTabId = null;
+let currentWindowId = null;
 let currentSiteKey = "default";
 let saveTimer = 0;
 let initialized = false;
+let latestCaptureDataUrl = "";
+let latestCaptureBlob = null;
 
 function compactText(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -1062,20 +1095,31 @@ function buildDownloadFilename(values) {
   return `${sanitizeFolder(values.folder)}/${parts.join("_")}.png`;
 }
 
-async function copyPngToClipboard(dataUrl) {
-  if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
-    throw new Error("이 Edge 버전에서는 이미지 클립보드를 사용할 수 없습니다.");
-  }
-
+async function pngBlobFromDataUrl(dataUrl) {
   const response = await fetch(dataUrl);
   const blob = await response.blob();
-  const pngBlob = blob.type === "image/png"
+  return blob.type === "image/png"
     ? blob
     : new Blob([await blob.arrayBuffer()], { type: "image/png" });
+}
 
-  await navigator.clipboard.write([
-    new ClipboardItem({ "image/png": pngBlob })
-  ]);
+function writePngBlobToClipboard(pngBlobOrPromise) {
+  if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+    return Promise.reject(new Error("이 Edge 버전에서는 이미지 클립보드를 사용할 수 없습니다."));
+  }
+
+  try {
+    return navigator.clipboard.write([
+      new ClipboardItem({ "image/png": pngBlobOrPromise })
+    ]);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+function copyPngToClipboard(dataUrlOrPromise) {
+  const pngBlobPromise = Promise.resolve(dataUrlOrPromise).then(pngBlobFromDataUrl);
+  return writePngBlobToClipboard(pngBlobPromise);
 }
 
 function normalizedState(value) {
@@ -1234,6 +1278,7 @@ async function loadActiveTab() {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   const tab = tabs[0];
   currentTabId = tab?.id || null;
+  currentWindowId = Number.isInteger(tab?.windowId) ? tab.windowId : undefined;
   currentSiteKey = siteKeyForUrl(tab?.url || "");
   const profile = ensureProfile();
 
@@ -1272,6 +1317,31 @@ elements.detectButton.addEventListener("click", () => {
   requestMenuDetection().catch(console.error);
 });
 
+elements.copyAgainButton.addEventListener("click", () => {
+  if (!latestCaptureDataUrl) {
+    setStatus("다시 복사할 캡처 이미지가 없습니다.", "error");
+    return;
+  }
+
+  elements.copyAgainButton.disabled = true;
+  // 재시도할 때는 이미 만들어 둔 Blob을 즉시 전달해 Edge 109 호환성을 높입니다.
+  const copyResult = (latestCaptureBlob
+    ? writePngBlobToClipboard(latestCaptureBlob)
+    : copyPngToClipboard(latestCaptureDataUrl))
+    .then(() => ({ ok: true }))
+    .catch((error) => ({ ok: false, error }));
+
+  copyResult.then((result) => {
+    elements.copyAgainButton.disabled = false;
+    if (result.ok) {
+      elements.copyAgainButton.hidden = true;
+      setStatus("클립보드에 PNG 이미지를 다시 복사했습니다.", "success");
+    } else {
+      setStatus(`클립보드 복사 실패: ${result.error?.message || "알 수 없는 오류"}`, "error");
+    }
+  });
+});
+
 elements.form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!elements.form.reportValidity()) {
@@ -1281,34 +1351,29 @@ elements.form.addEventListener("submit", async (event) => {
 
   const values = valuesFromForm();
   rememberMenuValues(values);
-  await saveState();
   elements.captureButton.disabled = true;
   elements.captureButton.classList.add("busy");
+  elements.copyAgainButton.hidden = true;
+  latestCaptureBlob = null;
   setStatus("현재 화면을 저장하고 클립보드에 복사하고 있습니다…", "working");
 
+  // Edge 109에서도 사용자 동작 권한을 유지하도록 첫 await 전에 복사를 예약합니다.
+  const capturePromise = chrome.tabs.captureVisibleTab(currentWindowId, { format: "png" });
+  const pngBlobPromise = capturePromise.then(pngBlobFromDataUrl);
+  pngBlobPromise
+    .then((blob) => {
+      latestCaptureBlob = blob;
+    })
+    .catch(() => undefined);
+  const clipboardResultPromise = writePngBlobToClipboard(pngBlobPromise)
+    .then(() => ({ ok: true }))
+    .catch((error) => ({ ok: false, error }));
+
   try {
-    const tabs = await chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    });
-    const tab = tabs[0];
-    if (!tab?.id || !/^https?:/i.test(tab.url || "")) {
-      throw new Error("캡처할 웹 페이지 탭을 먼저 선택해 주세요.");
-    }
-
-    const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
-      format: "png"
-    });
+    await saveState();
+    const dataUrl = await capturePromise;
+    latestCaptureDataUrl = dataUrl;
     const filename = buildDownloadFilename(values);
-    let clipboardError = "";
-
-    try {
-      // 포커스가 있는 확장 팝업에서 직접 PNG 이미지를 복사합니다.
-      await copyPngToClipboard(dataUrl);
-    } catch (error) {
-      clipboardError = error?.message || "클립보드 복사에 실패했습니다.";
-      console.error("클립보드 복사 실패:", error);
-    }
 
     await chrome.downloads.download({
       url: dataUrl,
@@ -1317,7 +1382,10 @@ elements.form.addEventListener("submit", async (event) => {
       saveAs: false
     });
 
-    if (clipboardError) {
+    const clipboardResult = await clipboardResultPromise;
+    if (!clipboardResult.ok) {
+      const clipboardError = clipboardResult.error?.message || "알 수 없는 오류";
+      elements.copyAgainButton.hidden = false;
       setStatus(`파일은 저장했지만 클립보드 복사에 실패했습니다: ${clipboardError}`, "warning");
     } else {
       setStatus(`저장 및 클립보드 복사 완료: 다운로드/${filename}`, "success");
@@ -1361,6 +1429,7 @@ initialize().catch((error) => {
   setConnection(false);
   setStatus(error?.message || "확장 프로그램을 초기화하지 못했습니다.", "error");
 });
+
 
 
 ```
