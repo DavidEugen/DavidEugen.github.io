@@ -12,7 +12,7 @@ categories: think
   "manifest_version": 3,
   "name": "JSP 화면 캡처 도구",
   "description": "JSP 업무 화면의 메뉴 경로를 추적해 PNG로 저장하고 클립보드에 복사합니다.",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "minimum_chrome_version": "109",
   "permissions": [
     "activeTab",
@@ -123,10 +123,10 @@ async function captureVisible(values) {
   return { downloadId, filename };
 }
 
-async function valuesForShortcut() {
+async function valuesForShortcut(activeTab) {
   const stored = await chrome.storage.local.get(STATE_KEY);
   const state = stored[STATE_KEY] || {};
-  const tab = await getActiveTab();
+  const tab = activeTab || await getActiveTab();
   let siteKey = "default";
   try {
     siteKey = new URL(tab.url).origin;
@@ -154,12 +154,28 @@ async function valuesForShortcut() {
   return values;
 }
 
+async function openShortcutCaptureWindow() {
+  const tab = await getActiveTab();
+  const values = await valuesForShortcut(tab);
+  const runnerUrl = new URL(chrome.runtime.getURL("shortcut-capture.html"));
+  runnerUrl.searchParams.set("windowId", String(tab.windowId));
+  runnerUrl.searchParams.set("filename", buildDownloadFilename(values));
+
+  await chrome.windows.create({
+    url: runnerUrl.href,
+    type: "popup",
+    width: 390,
+    height: 230,
+    focused: true
+  });
+}
+
 chrome.commands.onCommand.addListener(async (command) => {
   if (command !== "capture-visible") {
     return;
   }
   try {
-    await captureVisible(await valuesForShortcut());
+    await openShortcutCaptureWindow();
   } catch (error) {
     console.warn("단축키 캡처 실패:", error);
   }
@@ -1428,6 +1444,255 @@ window.addEventListener("pagehide", () => {
 initialize().catch((error) => {
   setConnection(false);
   setStatus(error?.message || "확장 프로그램을 초기화하지 못했습니다.", "error");
+});
+
+[shortcut-capture.html]=========
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>단축키 화면 캡처</title>
+    <link rel="stylesheet" href="shortcut-capture.css">
+  </head>
+  <body>
+    <main class="runner-card">
+      <div id="runnerIcon" class="runner-icon" aria-hidden="true"></div>
+      <div class="runner-copy">
+        <h1>단축키 화면 캡처</h1>
+        <p id="runnerStatus" role="status">PNG 저장과 클립보드 복사를 준비하고 있습니다…</p>
+      </div>
+      <div class="runner-actions">
+        <button id="retryButton" type="button" hidden>클립보드 다시 복사</button>
+        <button id="closeButton" type="button" hidden>닫기</button>
+      </div>
+    </main>
+    <script src="shortcut-capture.js"></script>
+  </body>
+</html>
+
+[shortcut-capture.css]=========
+:root {
+  color-scheme: light;
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  color: #172033;
+  background: #f3f6fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  min-width: 360px;
+  min-height: 190px;
+  margin: 0;
+  padding: 18px;
+  place-items: center;
+  background: radial-gradient(circle at 100% 0, rgba(55, 107, 246, 0.12), transparent 210px), #f3f6fb;
+}
+
+.runner-card {
+  width: 100%;
+  padding: 18px;
+  border: 1px solid #dfe5ef;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 25px rgba(39, 54, 84, 0.1);
+}
+
+.runner-icon {
+  float: left;
+  width: 25px;
+  height: 25px;
+  margin: 1px 12px 22px 0;
+  border: 3px solid #376bf6;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 750ms linear infinite;
+}
+
+.runner-icon.done {
+  display: grid;
+  border: 0;
+  color: #fff;
+  background: #087b54;
+  animation: none;
+  place-items: center;
+}
+
+.runner-icon.done::before {
+  content: "✓";
+  font-weight: 900;
+}
+
+.runner-icon.error {
+  display: grid;
+  border: 0;
+  color: #fff;
+  background: #c43749;
+  animation: none;
+  place-items: center;
+}
+
+.runner-icon.error::before {
+  content: "!";
+  font-weight: 900;
+}
+
+.runner-copy h1 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.runner-copy p {
+  min-height: 36px;
+  margin: 0;
+  color: #68748a;
+  font-size: 11px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.runner-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.runner-actions button {
+  padding: 7px 11px;
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+  color: #40506a;
+  background: #f7f9fc;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.runner-actions button:first-child {
+  border-color: #d6a550;
+  color: #8a4e00;
+  background: #fff8e9;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+[shortcut-capture.js]=========
+"use strict";
+
+const elements = {
+  icon: document.querySelector("#runnerIcon"),
+  status: document.querySelector("#runnerStatus"),
+  retryButton: document.querySelector("#retryButton"),
+  closeButton: document.querySelector("#closeButton")
+};
+
+let latestPngBlob = null;
+
+function setResult(message, type) {
+  elements.status.textContent = message;
+  elements.icon.className = `runner-icon ${type}`.trim();
+}
+
+async function pngBlobFromDataUrl(dataUrl) {
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
+  return blob.type === "image/png"
+    ? blob
+    : new Blob([await blob.arrayBuffer()], { type: "image/png" });
+}
+
+function writePngBlobToClipboard(pngBlobOrPromise) {
+  if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+    return Promise.reject(new Error("이 Edge 버전에서는 이미지 클립보드를 사용할 수 없습니다."));
+  }
+
+  try {
+    return navigator.clipboard.write([
+      new ClipboardItem({ "image/png": pngBlobOrPromise })
+    ]);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+async function runShortcutCapture() {
+  const params = new URLSearchParams(location.search);
+  const sourceWindowId = Number(params.get("windowId"));
+  const filename = params.get("filename") || "화면캡처/단축키_캡처.png";
+  if (!Number.isInteger(sourceWindowId)) {
+    throw new Error("캡처할 원본 창 정보를 찾지 못했습니다.");
+  }
+
+  // 포커스된 확장 창에서 첫 await 전에 클립보드 쓰기를 예약합니다.
+  const capturePromise = chrome.tabs.captureVisibleTab(sourceWindowId, { format: "png" });
+  const pngBlobPromise = capturePromise.then(pngBlobFromDataUrl);
+  pngBlobPromise
+    .then((blob) => {
+      latestPngBlob = blob;
+    })
+    .catch(() => undefined);
+  const clipboardResultPromise = writePngBlobToClipboard(pngBlobPromise)
+    .then(() => ({ ok: true }))
+    .catch((error) => ({ ok: false, error }));
+
+  const dataUrl = await capturePromise;
+  await chrome.downloads.download({
+    url: dataUrl,
+    filename,
+    conflictAction: "uniquify",
+    saveAs: false
+  });
+
+  const clipboardResult = await clipboardResultPromise;
+  if (!clipboardResult.ok) {
+    elements.retryButton.hidden = false;
+    elements.closeButton.hidden = false;
+    setResult(
+      `파일은 저장했지만 클립보드 복사에 실패했습니다: ${clipboardResult.error?.message || "알 수 없는 오류"}`,
+      "error"
+    );
+    return;
+  }
+
+  setResult("PNG 저장과 클립보드 복사를 완료했습니다.", "done");
+  window.setTimeout(() => window.close(), 900);
+}
+
+elements.retryButton.addEventListener("click", () => {
+  if (!latestPngBlob) {
+    setResult("다시 복사할 PNG 데이터가 없습니다.", "error");
+    return;
+  }
+
+  elements.retryButton.disabled = true;
+  writePngBlobToClipboard(latestPngBlob)
+    .then(() => {
+      setResult("클립보드에 PNG 이미지를 다시 복사했습니다.", "done");
+      window.setTimeout(() => window.close(), 900);
+    })
+    .catch((error) => {
+      elements.retryButton.disabled = false;
+      setResult(`클립보드 복사 실패: ${error?.message || "알 수 없는 오류"}`, "error");
+    });
+});
+
+elements.closeButton.addEventListener("click", () => window.close());
+
+runShortcutCapture().catch((error) => {
+  elements.closeButton.hidden = false;
+  setResult(error?.message || "단축키 캡처에 실패했습니다.", "error");
 });
 
 
